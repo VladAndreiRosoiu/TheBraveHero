@@ -1,5 +1,6 @@
 package ro.var.thebravehero.models;
 
+import ro.var.thebravehero.data.GetCharacters;
 import ro.var.thebravehero.models.abilities.*;
 import ro.var.thebravehero.models.characters.*;
 import java.util.*;
@@ -207,15 +208,16 @@ public class MagicForest {
          *TODO
          */
         System.out.println("ROUND " + round + " ENDED!");
+        for (SpecialAbility specialAbility:currentHero.getSpecialAbilities()){
+            if (specialAbility.isActive()){
+                System.out.println(specialAbility.getName() + " was activated this round!");
+                System.out.println(specialAbility.getDescription());
+            }
+        }
         if (turn){
             System.out.println("HERO ATTACKED FOR " + damage);
         }else {
             System.out.println("BEAST ATTACKED FOR " + damage);
-        }
-        for (SpecialAbility specialAbility:currentHero.getSpecialAbilities()){
-            if (specialAbility.isActive()){
-                System.out.println(specialAbility.getName() + " was activated this round!");
-            }
         }
         System.out.println("HERO LIFE " + currentHero.getLife());
         System.out.println("BEAST LIFE " + currentBeast.getLife());
