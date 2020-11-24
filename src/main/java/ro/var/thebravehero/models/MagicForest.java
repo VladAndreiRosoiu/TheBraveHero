@@ -1,13 +1,8 @@
 package ro.var.thebravehero.models;
 
-import ro.var.thebravehero.models.abilities.AbilityType;
-import ro.var.thebravehero.models.abilities.SpecialAbility;
-import ro.var.thebravehero.models.characters.Beast;
-import ro.var.thebravehero.models.characters.Hero;
-
-import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
+import ro.var.thebravehero.models.abilities.*;
+import ro.var.thebravehero.models.characters.*;
+import java.util.*;
 
 /*
  *TODO
@@ -105,7 +100,7 @@ public class MagicForest {
          */
         for (SpecialAbility specialAbility : currentHero.getSpecialAbilities()) {
             if ((1 + random.nextInt(100)) <= specialAbility.getActivationChance()) {
-                specialAbility.setActivated(true);
+                specialAbility.setActive(true);
             }
         }
     }
@@ -115,7 +110,7 @@ public class MagicForest {
          *TODO
          */
         for (SpecialAbility specialAbility : currentHero.getSpecialAbilities()) {
-            specialAbility.setActivated(false);
+            specialAbility.setActive(false);
         }
     }
 
@@ -166,7 +161,7 @@ public class MagicForest {
             int initialStrength = currentHero.getStrength();
             for (SpecialAbility specialAbility : currentHero.getSpecialAbilities()) {
                 if (specialAbility.getAbilityType().equals(AbilityType.DAMAGE_INCREASE)
-                        && specialAbility.isActivated()) {
+                        && specialAbility.isActive()) {
                     currentHero.setStrength(currentHero.getStrength() * 2);
                 }
             }
@@ -178,7 +173,7 @@ public class MagicForest {
 
             for (SpecialAbility specialAbility : currentHero.getSpecialAbilities()) {
                 if (specialAbility.getAbilityType().equals(AbilityType.DEFENCE_INCREASE)
-                        && specialAbility.isActivated()) {
+                        && specialAbility.isActive()) {
                     damage = damage / 2;
                 }
             }
@@ -218,7 +213,7 @@ public class MagicForest {
             System.out.println("BEAST ATTACKED FOR " + damage);
         }
         for (SpecialAbility specialAbility:currentHero.getSpecialAbilities()){
-            if (specialAbility.isActivated()){
+            if (specialAbility.isActive()){
                 System.out.println(specialAbility.getName() + " was activated this round!");
             }
         }

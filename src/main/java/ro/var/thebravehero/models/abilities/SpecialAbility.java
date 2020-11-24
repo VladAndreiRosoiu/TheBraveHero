@@ -11,14 +11,14 @@ public class SpecialAbility {
     private int activationChance;
     private String description;
     private AbilityType abilityType;
-    private boolean isActivated;
+    private boolean isActive;
 
-    public SpecialAbility(String name, int activationChance, String description, AbilityType abilityType, boolean isActivated) {
+    public SpecialAbility(String name, int activationChance, String description, AbilityType abilityType, boolean isActive) {
         this.name = name;
         this.activationChance = activationChance;
         this.description = description;
         this.abilityType = abilityType;
-        this.isActivated = isActivated;
+        this.isActive = isActive;
     }
 
     public String getName() {
@@ -53,11 +53,11 @@ public class SpecialAbility {
         this.abilityType = abilityType;
     }
 
-    public boolean isActivated() {
-        return isActivated;
+    public boolean isActive() {
+        return isActive;
     }
 
-    public void setActivated(boolean activated) {
-        isActivated = activated;
+    public void setActive(boolean active) {
+        isActive = active;
     }
 }
