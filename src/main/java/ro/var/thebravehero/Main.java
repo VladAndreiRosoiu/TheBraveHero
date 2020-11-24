@@ -11,6 +11,6 @@ import ro.var.thebravehero.models.MagicForest;
 public class Main {
     public static void main(String[] args) {
         MagicForest magicForest = new MagicForest(GetCharacters.getHeroes(), GetCharacters.getBeasts());
-        magicForest.initiateGame();
+        magicForest.startGame();
     }
 }

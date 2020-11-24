@@ -6,12 +6,11 @@ import ro.var.thebravehero.models.characters.Beast;
 import ro.var.thebravehero.models.characters.Hero;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 import java.util.Scanner;
 
 /*
-*TODO
+ *TODO
  */
 
 public class MagicForest {
@@ -23,6 +22,7 @@ public class MagicForest {
     private Beast currentBeast;
     private int round = 1;
     private final Random random = new Random();
+    private boolean turn;
 
 
     public MagicForest(List<Hero> heroes, List<Beast> beasts) {
@@ -30,65 +30,17 @@ public class MagicForest {
         this.beasts = beasts;
     }
 
-    public void initiateGame() {
+    public void startGame() {
 
         currentHero = chooseHero();
         currentBeast = chooseBeast();
-        boolean turn = isHeroFirst();
-        int damage;
-        System.out.println("\t# FIGHT STARTED! #");
-        System.out.println("--------------------------");
-        System.out.print("HERO LIFE " + currentHero.getLife());
-        System.out.print("\tHERO STRENGTH " + currentHero.getStrength());
-        System.out.print("\tHERO DEFENCE " + currentHero.getDefence());
-        System.out.println();
-        System.out.print("BEAST LIFE " + currentBeast.getLife());
-        System.out.print("\tBEAST STRENGTH " + currentBeast.getStrength());
-        System.out.print("\tBEAST DEFENCE " + currentBeast.getDefence());
-        System.out.println();
+        turn = isHeroFirst();
+        printInitialStatistics();
 
         do {
             setHeroAbilities();
-            if (turn) {
-                System.out.println("Hero attacking");
-                int initialStrength = currentHero.getStrength();
-                Optional<SpecialAbility> specialAbilityOpt = currentHero
-                        .getSpecialAbilities()
-                        .stream()
-                        .filter(specialAbility -> specialAbility.getAbilityType().equals(AbilityType.DAMAGE_INCREASE))
-                        .findFirst();
-                if (specialAbilityOpt.isPresent()) {
-                    if (specialAbilityOpt.get().isActivated()) {
-                        currentHero.setStrength(currentHero.getStrength() + currentHero.getStrength());
-                    }
-                }
-                damage = heroAttackInitiated();
-                System.out.println("Hero damage done " + damage);
-                currentBeast.setLife(currentBeast.getLife() - damage);
-                currentHero.setStrength(initialStrength);
-            } else {
-                System.out.println("Beast attacking");
-                damage = beastAttackInitiated();
-                Optional<SpecialAbility> specialAbilityOpt = currentHero
-                        .getSpecialAbilities()
-                        .stream()
-                        .filter(specialAbility -> specialAbility.getAbilityType().equals(AbilityType.DEFENCE_INCREASE))
-                        .findFirst();
-                if (specialAbilityOpt.isPresent()) {
-                    if (specialAbilityOpt.get().isActivated()) {
-                        damage = damage / 2;
-                    }
-                }
-                System.out.println("Beast damage done " + damage);
-                currentHero.setLife(currentHero.getLife() - damage);
-            }
-            System.out.println("ROUND " + round + " ENDED!");
-            System.out.println("HERO LIFE " + currentHero.getLife());
-            System.out.println("BEAST LIFE " + currentBeast.getLife());
-            turn = !turn;
-            round++;
-            resetHeroAbilities();
-
+            int damage = gameLogic();
+            printRoundStatistics(damage);
             System.out.println("Continue? Y/N");
             String answer = sc.next();
             if (answer.equalsIgnoreCase("y")) {
@@ -97,7 +49,6 @@ public class MagicForest {
                 System.out.println("CHICKEN!!!!");
                 break;
             }
-
             if (currentHero.getLife() <= 0) {
                 System.out.println("Hero died!");
             } else if (currentBeast.getLife() <= 0) {
@@ -105,6 +56,9 @@ public class MagicForest {
             } else if (round == 0) {
                 System.out.println("It's a tie! Nobody died!");
             }
+            resetHeroAbilities();
+            turn = !turn;
+            round++;
         } while (round < 21 && currentHero.getLife() > 0 && currentBeast.getLife() > 0);
 
     }
@@ -150,9 +104,8 @@ public class MagicForest {
          *TODO
          */
         for (SpecialAbility specialAbility : currentHero.getSpecialAbilities()) {
-            if ((1 + random.nextInt(101)) <= specialAbility.getActivationChance()) {
+            if ((1 + random.nextInt(100)) <= specialAbility.getActivationChance()) {
                 specialAbility.setActivated(true);
-                System.out.println(specialAbility.getName() + " IS ACTIVATED!");
             }
         }
     }
@@ -167,29 +120,112 @@ public class MagicForest {
     }
 
     private int heroAttackInitiated() {
+        /*
+         *TODO
+         */
         int damage = (currentHero.getStrength() - currentBeast.getDefence());
-        if (damage > 0 && damage <= 100) {
-            return damage;
-        } else if (damage > 100) {
-            return 100;
-        } else {
+        if ((1 + random.nextInt(100) <= currentHero.getLuck())) {
+            System.out.println("ATTACK DEFENDED!");
             return 0;
+        } else {
+            if (damage > 0 && damage <= 100) {
+                return damage;
+            } else if (damage > 100) {
+                return 100;
+            } else {
+                return 0;
+            }
         }
     }
 
     private int beastAttackInitiated() {
         /*
-        *TODO
+         *TODO
          */
         int damage = (currentBeast.getStrength() - currentHero.getDefence());
-        if (damage > 0 && damage <= 100) {
-            return damage;
-        } else if (damage > 100) {
-            return 100;
-        } else {
+        if ((1 + random.nextInt(100) <= currentBeast.getLuck())) {
+            System.out.println("ATTACK DEFENDED!");
             return 0;
+        } else {
+            if (damage > 0 && damage <= 100) {
+                return damage;
+            } else if (damage > 100) {
+                return 100;
+            } else {
+                return 0;
+            }
         }
     }
+
+    private int gameLogic() {
+        /*
+         *TODO
+         */
+        int damage;
+        if (turn) {
+            int initialStrength = currentHero.getStrength();
+            for (SpecialAbility specialAbility : currentHero.getSpecialAbilities()) {
+                if (specialAbility.getAbilityType().equals(AbilityType.DAMAGE_INCREASE)
+                        && specialAbility.isActivated()) {
+                    currentHero.setStrength(currentHero.getStrength() * 2);
+                }
+            }
+            damage = heroAttackInitiated();
+            currentBeast.setLife(currentBeast.getLife() - damage);
+            currentHero.setStrength(initialStrength);
+        } else {
+            damage = beastAttackInitiated();
+
+            for (SpecialAbility specialAbility : currentHero.getSpecialAbilities()) {
+                if (specialAbility.getAbilityType().equals(AbilityType.DEFENCE_INCREASE)
+                        && specialAbility.isActivated()) {
+                    damage = damage / 2;
+                }
+            }
+            currentHero.setLife(currentHero.getLife() - damage);
+        }
+        return damage;
+    }
+
+    private void printInitialStatistics() {
+        /*
+         *TODO
+         */
+        System.out.println("\t# FIGHT STARTED! #");
+        System.out.println("--------------------------");
+        System.out.print("HERO LIFE " + currentHero.getLife());
+        System.out.print("\tHERO STRENGTH " + currentHero.getStrength());
+        System.out.print("\tHERO DEFENCE " + currentHero.getDefence());
+        System.out.print("\tHERO SPEED " + currentHero.getSpeed());
+        System.out.print("\tHERO LUCK " + currentHero.getLuck());
+        System.out.println();
+        System.out.print("BEAST LIFE " + currentBeast.getLife());
+        System.out.print("\tBEAST STRENGTH " + currentBeast.getStrength());
+        System.out.print("\tBEAST DEFENCE " + currentBeast.getDefence());
+        System.out.print("\tBEAST SPEED " + currentBeast.getSpeed());
+        System.out.print("\tBEAST LUCK " + currentBeast.getLuck());
+        System.out.println();
+    }
+
+    private void printRoundStatistics(int damage) {
+        /*
+         *TODO
+         */
+        System.out.println("ROUND " + round + " ENDED!");
+        if (turn){
+            System.out.println("HERO ATTACKED FOR " + damage);
+        }else {
+            System.out.println("BEAST ATTACKED FOR " + damage);
+        }
+        for (SpecialAbility specialAbility:currentHero.getSpecialAbilities()){
+            if (specialAbility.isActivated()){
+                System.out.println(specialAbility.getName() + " was activated this round!");
+            }
+        }
+        System.out.println("HERO LIFE " + currentHero.getLife());
+        System.out.println("BEAST LIFE " + currentBeast.getLife());
+    }
+
 
 //    private boolean continueGame() {
 //        try {
