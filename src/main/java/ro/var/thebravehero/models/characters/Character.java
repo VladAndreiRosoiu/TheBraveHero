@@ -1,4 +1,9 @@
-package ro.var.thebravehero.model.chars;
+package ro.var.thebravehero.models.characters;
+
+/*
+ *TODO
+ */
+
 
 public abstract class Character {
     private String name;

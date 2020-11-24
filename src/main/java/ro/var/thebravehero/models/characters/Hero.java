@@ -1,6 +1,13 @@
-package ro.var.thebravehero.model.chars;
+package ro.var.thebravehero.models.characters;
+
+import ro.var.thebravehero.models.abilities.SpecialAbility;
 
 import java.util.List;
+
+/*
+ *TODO
+ */
+
 
 public class Hero extends Character {
 
@@ -8,7 +15,7 @@ public class Hero extends Character {
 
     public Hero(String name, int life, int strength, int defence, int speed, int luck, List<SpecialAbility> specialAbilities) {
         super(name, life, strength, defence, speed, luck);
-        this.specialAbilities=specialAbilities;
+        this.specialAbilities = specialAbilities;
     }
 
     public List<SpecialAbility> getSpecialAbilities() {

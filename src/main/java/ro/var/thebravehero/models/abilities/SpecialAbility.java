@@ -1,15 +1,24 @@
-package ro.var.thebravehero.model.chars;
+package ro.var.thebravehero.models.abilities;
+
+/*
+ *TODO
+ */
+
 
 public class SpecialAbility {
 
     private String name;
     private int activationChance;
     private String description;
+    private AbilityType abilityType;
+    private boolean isActivated;
 
-    public SpecialAbility(String name, int activationChance, String description) {
+    public SpecialAbility(String name, int activationChance, String description, AbilityType abilityType, boolean isActivated) {
         this.name = name;
         this.activationChance = activationChance;
         this.description = description;
+        this.abilityType = abilityType;
+        this.isActivated = isActivated;
     }
 
     public String getName() {
@@ -34,5 +43,21 @@ public class SpecialAbility {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public AbilityType getAbilityType() {
+        return abilityType;
+    }
+
+    public void setAbilityType(AbilityType abilityType) {
+        this.abilityType = abilityType;
+    }
+
+    public boolean isActivated() {
+        return isActivated;
+    }
+
+    public void setActivated(boolean activated) {
+        isActivated = activated;
     }
 }

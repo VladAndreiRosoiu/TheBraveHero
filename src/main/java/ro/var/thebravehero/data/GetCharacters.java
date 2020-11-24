@@ -1,8 +1,9 @@
 package ro.var.thebravehero.data;
 
-import ro.var.thebravehero.model.chars.Beast;
-import ro.var.thebravehero.model.chars.Hero;
-import ro.var.thebravehero.model.chars.SpecialAbility;
+import ro.var.thebravehero.models.abilities.AbilityType;
+import ro.var.thebravehero.models.abilities.SpecialAbility;
+import ro.var.thebravehero.models.characters.Beast;
+import ro.var.thebravehero.models.characters.Hero;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,10 +19,14 @@ public class GetCharacters {
         SpecialAbility specialAbility1 = new SpecialAbility(
                 "Dragon's Force",
                 10,
-                "When activated, doubles hero power");
+                "When activated, doubles hero power",
+                AbilityType.DAMAGE_INCREASE,
+                false);
         SpecialAbility specialAbility2 = new SpecialAbility("Magic Shield",
                 20,
-                "When activated, next attack damage will be reduced by half");
+                "When activated, next attack damage will be reduced by half",
+                AbilityType.DEFENCE_INCREASE,
+                false);
         specialAbilities.add(specialAbility1);
         specialAbilities.add(specialAbility2);
         Hero hero = new Hero("Carl",
