@@ -23,12 +23,12 @@ public class GetCharacters {
         SpecialAbility specialAbility1 = new SpecialAbility(
                 "Dragon's Force",
                 10,
-                "When activated, doubles hero power",
+                "Hero strength doubles!",
                 AbilityType.DAMAGE_INCREASE,
                 false);
         SpecialAbility specialAbility2 = new SpecialAbility("Magic Shield",
                 20,
-                "When activated, next attack damage will be reduced by half",
+                "Next attack damage will be reduced by half!",
                 AbilityType.DEFENCE_INCREASE,
                 false);
         specialAbilities.add(specialAbility1);

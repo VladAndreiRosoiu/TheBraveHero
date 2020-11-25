@@ -258,21 +258,21 @@ public class MagicForest {
                     specialAbility.getAbilityType().equals(AbilityType.DAMAGE_INCREASE) &&
                     turn) {
                 System.out.println("*** " + specialAbility.getName() + " is active this round!");
-                System.out.println("*** " + specialAbility.getDescription() + "!");
+                System.out.println("*** " + specialAbility.getDescription());
             } else if (specialAbility.isActive() &&
                     specialAbility.getAbilityType().equals(AbilityType.DEFENCE_INCREASE) &&
                     !turn) {
                 System.out.println("*** " + specialAbility.getName() + " is active this round!");
-                System.out.println("*** " + specialAbility.getDescription() + "!");
+                System.out.println("*** " + specialAbility.getDescription());
             }
         }
         if (turn) {
             System.out.println("# " + currentBeast.getName() + " suffers a damage of " + damage + "!");
+            System.out.println("# " + currentBeast.getName() + "'s remaining life is " + currentBeast.getLife() + "!");
         } else {
             System.out.println("# " + currentHero.getName() + " suffers a damage of " + damage + "!");
+            System.out.println("# " + currentHero.getName() + "'s remaining life is " + currentHero.getLife() + "!");
         }
-        System.out.println("# " + currentHero.getName() + "'s remaining life is " + currentHero.getLife() + "!");
-        System.out.println("# " + currentBeast.getName() + "'s remaining life is " + currentBeast.getLife() + "!");
         System.out.println("Round " + round + " ends!");
     }
 
