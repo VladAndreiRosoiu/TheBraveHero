@@ -1,14 +1,12 @@
 package ro.var.thebravehero.data;
 
-import ro.var.thebravehero.models.abilities.AbilityType;
-import ro.var.thebravehero.models.abilities.SpecialAbility;
-import ro.var.thebravehero.models.characters.Beast;
-import ro.var.thebravehero.models.characters.Hero;
+import ro.var.thebravehero.models.abilities.*;
+import ro.var.thebravehero.models.characters.*;
+import java.util.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+/*
+*TODO
+ */
 
 public class GetCharacters {
 
