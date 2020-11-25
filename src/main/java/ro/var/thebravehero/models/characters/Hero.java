@@ -5,9 +5,9 @@ import ro.var.thebravehero.models.abilities.SpecialAbility;
 import java.util.List;
 
 /*
- *TODO
+ *Child class of Character
+ *A hero has in addition from the attributes inherited from Character, a list of SpecialAbilities
  */
-
 
 public class Hero extends Character {
 
