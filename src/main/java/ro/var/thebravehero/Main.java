@@ -20,6 +20,9 @@ public class Main {
     }
 
     private static boolean playAgain() {
+        /*
+        *TODO
+         */
         Scanner sc = new Scanner(System.in);
         System.out.println("Do you want to start another adventure? YES/NO");
         String answer = sc.next().toUpperCase();
@@ -31,7 +34,7 @@ public class Main {
                 System.exit(0);
                 break;
             default:
-                System.out.println("Oooops.. we could not match your answer. Let's try again!");
+                System.out.println("Unfortunately... we could not match your answer! Let's try again!");
                 playAgain();
         }
         return false;

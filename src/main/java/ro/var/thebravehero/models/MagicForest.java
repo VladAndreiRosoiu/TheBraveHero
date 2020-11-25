@@ -32,21 +32,20 @@ public class MagicForest {
     }
 
     public void startGame() {
-
         /*
          *TODO
          */
-        printIntroduction();
+        printGameIntroduction();
         setHero();
         setBeast();
         printFightIntroduction();
         turn = isHeroFirst();
-        printInitialStatistics();
-        System.out.println("Are you ready to start?");
+        printInitialStats();
+        System.out.println("Are you ready start the fight?");
         retreatFromBattle();
         printFirstAttacker();
         while (gameOn && round < 21 && currentHero.getLife() > 0 && currentBeast.getLife() > 0) {
-            System.out.println("Round " + round + " started!");
+            System.out.println("Round " + round + " starts!");
             setHeroAbilities();
             int damage = playRound();
             printRoundStatistics(damage);
@@ -54,7 +53,7 @@ public class MagicForest {
             turn = !turn;
             round++;
             if (round < 21 && currentHero.getLife() > 0 && currentBeast.getLife() > 0) {
-                System.out.println("Continue or retreat?");
+                System.out.println("Continue?");
                 retreatFromBattle();
             } else {
                 break;
@@ -86,9 +85,7 @@ public class MagicForest {
                 System.out.println("\t* Speed " + heroes.get(i).getSpeed());
                 System.out.println("\t* Luck " + heroes.get(i).getLuck());
             }
-            System.out.println();
-            System.out.println("Choose your hero!");
-            System.out.println("Select one of the numbers displayed in front of the hero name!");
+            System.out.println("Choose your hero by typing the corresponding number!");
             int choice = sc.nextInt();
             currentHero = heroes.get(choice - 1);
         } catch (InputMismatchException e) {
@@ -96,7 +93,7 @@ public class MagicForest {
             sc = new Scanner(System.in);
             setHero();
         } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("Please choose only one of the numbers displayed above!");
+            System.out.println("Please choose only one of the numbers displayed!");
             sc = new Scanner(System.in);
             setHero();
         }
@@ -191,7 +188,7 @@ public class MagicForest {
                 damage = 0;
                 System.out.println(currentHero.getName() + " dodges the attack!");
             } else {
-                damage = initiateAttack(currentHero.getStrength(), currentBeast.getDefence());
+                damage = initiateAttack(currentBeast.getStrength(), currentHero.getDefence());
             }
             for (SpecialAbility specialAbility : currentHero.getSpecialAbilities()) {
                 if (specialAbility.getAbilityType().equals(AbilityType.DEFENCE_INCREASE)
@@ -204,25 +201,40 @@ public class MagicForest {
         return damage;
     }
 
-    private void printInitialStatistics() {
+    private void retreatFromBattle() {
+        System.out.println("Type YES/NO");
+        String answer = sc.next().toUpperCase();
+        switch (answer) {
+            case "YES":
+                gameOn = true;
+                break;
+            case "NO":
+                printDefeat();
+                gameOn = false;
+                break;
+            default:
+                System.out.println("Unfortunately... we could not match your answer! Let's try again!");
+                retreatFromBattle();
+        }
+    }
+
+    private void printInitialStats() {
         /*
          *TODO
          */
-        System.out.println();
         System.out.println("\t*** GAME STATS ***");
-        System.out.println(currentHero.getName() + "'s life: " + currentHero.getLife());
-        System.out.println(currentHero.getName() + "'s strength: " + currentHero.getStrength());
-        System.out.println(currentHero.getName() + "'s defence: " + currentHero.getDefence());
-        System.out.println(currentHero.getName() + "'s speed: " + currentHero.getSpeed());
-        System.out.println(currentHero.getName() + "'s luck: " + currentHero.getLuck());
+        System.out.println("# "+currentHero.getName() + "'s life: " + currentHero.getLife());
+        System.out.println("# "+currentHero.getName() + "'s strength: " + currentHero.getStrength());
+        System.out.println("# "+currentHero.getName() + "'s defence: " + currentHero.getDefence());
+        System.out.println("# "+currentHero.getName() + "'s speed: " + currentHero.getSpeed());
+        System.out.println("# "+currentHero.getName() + "'s luck: " + currentHero.getLuck());
         System.out.println();
-        System.out.println(currentBeast.getName() + "'s life: " + currentBeast.getLife());
-        System.out.println(currentBeast.getName() + "'s strength " + currentBeast.getStrength());
-        System.out.println(currentBeast.getName() + "'s defence " + currentBeast.getDefence());
-        System.out.println(currentBeast.getName() + "'s speed " + currentBeast.getSpeed());
-        System.out.println(currentBeast.getName() + "'s luck " + currentBeast.getLuck());
+        System.out.println("# "+currentBeast.getName() + "'s life: " + currentBeast.getLife());
+        System.out.println("# "+currentBeast.getName() + "'s strength: " + currentBeast.getStrength());
+        System.out.println("# "+currentBeast.getName() + "'s defence: " + currentBeast.getDefence());
+        System.out.println("# "+currentBeast.getName() + "'s speed: " + currentBeast.getSpeed());
+        System.out.println("# "+currentBeast.getName() + "'s luck: " + currentBeast.getLuck());
         System.out.println("\t*** GAME STATS ***");
-        System.out.println();
     }
 
     private void printRoundStatistics(int damage) {
@@ -233,23 +245,23 @@ public class MagicForest {
             if (specialAbility.isActive() &&
                     specialAbility.getAbilityType().equals(AbilityType.DAMAGE_INCREASE) &&
                     turn) {
-                System.out.println("***" + specialAbility.getName() + " is activated this round!");
-                System.out.println("***" + specialAbility.getDescription());
+                System.out.println("*** " + specialAbility.getName() + " is active this round!");
+                System.out.println("*** " + specialAbility.getDescription()+"!");
             } else if (specialAbility.isActive() &&
                     specialAbility.getAbilityType().equals(AbilityType.DEFENCE_INCREASE) &&
                     !turn) {
-                System.out.println("***" + specialAbility.getName() + " is activated this round!");
-                System.out.println("***" + specialAbility.getDescription());
+                System.out.println("*** " + specialAbility.getName() + " is active this round!");
+                System.out.println("*** " + specialAbility.getDescription()+"!");
             }
         }
         if (turn) {
-            System.out.println(currentBeast.getName() + " suffers a damage of " + damage + "!");
+            System.out.println("# "+currentBeast.getName() + " suffers a damage of " + damage + "!");
         } else {
-            System.out.println(currentHero.getName() + " suffers a damage of " + damage + "!");
+            System.out.println("# "+currentHero.getName() + " suffers a damage of " + damage + "!");
         }
-        System.out.println(currentHero.getName() + "'s remaining life is " + currentHero.getLife() + "!");
-        System.out.println(currentBeast.getName() + "'s remaining life is " + currentBeast.getLife() + "!");
-        System.out.println("Round " + round + " ended!");
+        System.out.println("# "+currentHero.getName() + "'s remaining life is " + currentHero.getLife() + "!");
+        System.out.println("# "+currentBeast.getName() + "'s remaining life is " + currentBeast.getLife() + "!");
+        System.out.println("Round " + round + " ends!");
     }
 
     private void printFirstAttacker() {
@@ -260,27 +272,11 @@ public class MagicForest {
         }
     }
 
-    private void retreatFromBattle() {
-        System.out.println("Choose YES/NO");
-        String answer = sc.next().toUpperCase();
-        switch (answer) {
-            case "YES":
-                gameOn = true;
-                break;
-            case "NO":
-                System.out.println("CHICKEN!!!!");
-                gameOn = false;
-                break;
-            default:
-                retreatFromBattle();
-        }
-    }
-
-    private void printIntroduction() {
+    private void printGameIntroduction() {
         System.out.println("___________________________________");
         System.out.println("| Welcome to The Brave Hero game! |");
         System.out.println("___________________________________");
-        System.out.println("The sun has raised, another day has started!");
+        System.out.println("The sun is rising, a beautiful day starts!");
         System.out.println("Another adventure awaits just around the corner...");
         System.out.println("Which hero will depart into the Magic Forest to fight with unbelievable monsters?");
     }
@@ -290,7 +286,7 @@ public class MagicForest {
         System.out.println("" + currentHero.getName() + " left the comfort of his home and started adventuring into the Magic Forest!");
         System.out.println("Not much after, our hero steps right into an ambush! ");
         System.out.println("A terrible monster was waiting for the next victim!");
-        System.out.println("But " + currentHero.getName() + " it's not an ordinary human...but the greatest hero of all times!");
+        System.out.println("But " + currentHero.getName() + "'s not an ordinary human...but the greatest hero of all times!");
     }
 
     private void printVictory() {
