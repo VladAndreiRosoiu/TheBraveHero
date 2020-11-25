@@ -34,9 +34,9 @@ public class MagicForest {
     }
 
     public void startGame() {
-      /*
-      *Method created to link the app logic
-       */
+        /*
+         *Method created to link the app logic
+         */
         printGameIntroduction();            // print method
         setHero();                          // hero selection method
         setBeast();                         // random beast selection method
@@ -45,22 +45,20 @@ public class MagicForest {
         printInitialStats();                // print method - stats of characters
         System.out.println("Are you ready start the fight?");
         retreatFromBattle();                // method that allows the player to start the fight or not
-        printFirstAttacker();               // print method - who goes first
+        printFirstAttacker();               // print method
         while (gameOn && round < 21 && currentHero.getLife() > 0 && currentBeast.getLife() > 0) {
             System.out.println("Round " + round + " starts!");
             setHeroAbilities();             // at the beginning of each round, hero abilities are activated by their given chance
-            int damage = playRound();       // method used to handle the attack/defend part of the game after
+            int damage = playRound();       // method used to handle the attack/defend part of the game
             printRoundStatistics(damage);   // print method
             resetHeroAbilities();           // when the round finishes, hero abilities are deactivated
-            turn = !turn;                   // after a round has ended, "turn" takes it's opposite to allow the other character to attack
-            round++;                        // round is incremented at the end
+            turn = !turn;                   // after a round ends, "turn" takes it's opposite to allow the other character to attack
+            round++;                        // round counter is incremented
             if (round < 21 && currentHero.getLife() > 0 && currentBeast.getLife() > 0) { // if statement introduced so that the
                                                                                          // player is asked to continue only if ending
                                                                                          // game conditions are not met
                 System.out.println("Continue?");
                 retreatFromBattle();
-            } else {
-                break;
             }
         }
         if (currentHero.getLife() <= 0) {   // if statement introduced to handle the end game situations
@@ -70,7 +68,6 @@ public class MagicForest {
         } else if (round > 20) {
             printTie();                     // print method
         }
-        round = 1;                          // when the game ends, round counter is reset back to 1
     }
 
     private void setHero() {
@@ -177,7 +174,8 @@ public class MagicForest {
         if (turn) {
             System.out.println(currentHero.getName() + " grabs his sword and attacks!");
             int initialStrength = currentHero.getStrength();    // when hero is attacking it is a chance that an offensive special abilities activates
-                                                                // this variable is used to store the initial strength of the hero and re-apply it when the attack finishes
+                                                                // this variable is used to store the initial strength of the hero
+                                                                // and re-apply it when the attack finishes
             for (SpecialAbility specialAbility : currentHero.getSpecialAbilities()) {
                 if (specialAbility.getAbilityType().equals(AbilityType.DAMAGE_INCREASE)
                         && specialAbility.isActive()) {
@@ -194,16 +192,17 @@ public class MagicForest {
             currentHero.setStrength(initialStrength);
         } else {
             System.out.println(currentBeast.getName() + " rapidly charges our hero and attacks!");
-            if (defend(currentHero.getLuck())) { // if statement used to validate the dodge logic
+            if (defend(currentHero.getLuck())) {                // if statement used to validate the dodge logic
                 damage = 0;
                 System.out.println(currentHero.getName() + " dodges the attack!");
             } else {
                 damage = initiateAttack(currentBeast.getStrength(), currentHero.getDefence());
             }
-            for (SpecialAbility specialAbility : currentHero.getSpecialAbilities()) { // when the hero is attacked, it has a chance to activate an defensive ability
+            for (SpecialAbility specialAbility : currentHero.getSpecialAbilities()) {
+                                                                // when the hero is attacked it has a chance to activate an defensive ability
                 if (specialAbility.getAbilityType().equals(AbilityType.DEFENCE_INCREASE)
                         && specialAbility.isActive()) {
-                    damage = damage / 2; // dividing an integer is not the best approach, but for this game is ok
+                    damage = damage / 2;                        // dividing an integer is not the best approach, but for this game is ok
                 }
             }
             currentHero.setLife(currentHero.getLife() - damage);
@@ -213,7 +212,7 @@ public class MagicForest {
 
     private void retreatFromBattle() {
         /*
-         *This method is used to break the while loop used in startGame() and ask the player if wants to continue game or to retreat
+         *This method is used to break the while loop used in startGame() and ask the player if wants to continue
          */
         System.out.println("Type YES/NO");
         String answer = sc.next().toUpperCase();
@@ -281,9 +280,9 @@ public class MagicForest {
         /*
          *Print method - prints who will attack first
          */
-        if (turn && round == 1) {
+        if (turn && round == 1 && gameOn) {
             System.out.println("***" + currentHero.getName() + " is faster than " + currentBeast.getName() + " and strikes first!***");
-        } else if (!turn && round == 1) {
+        } else if (!turn && round == 1 && gameOn) {
             System.out.println("***" + currentBeast.getName() + " is faster than " + currentHero.getName() + " and strikes first!***");
         }
     }
@@ -326,7 +325,7 @@ public class MagicForest {
          */
         System.out.println("***DEFEAT***");
         System.out.println("Unfortunately the beast was too powerful and " + currentHero.getName() + " flee away in pain.");
-        System.out.println("Surely, after recovering " + currentHero.getName() + " will send the beast right away from where it come!");
+        System.out.println("Surely, after recovering " + currentHero.getName() + " will send the beast right away from where it came!");
         System.out.println("But this adventure is for another day!");
     }
 
@@ -334,7 +333,7 @@ public class MagicForest {
         /*
          *Print method - used if the round counter reaches 20
          */
-        System.out.println("***TIE");
+        System.out.println("***TIE***");
         System.out.println("Seems like this beast is truly a match for " + currentHero.getName() + "!");
         System.out.println("Unfortunately, this fight is over, it has to have end!");
     }
