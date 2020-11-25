@@ -8,10 +8,10 @@ package ro.var.thebravehero.models.abilities;
 public class SpecialAbility {
 
     private String name;
-    private int activationChance; // percentage of each ability so that the activation may or no occur
-    private String description;
-    private AbilityType abilityType; // constant used to discriminate abilities
-    private boolean isActive; // flag used to specify if the ability is active or not
+    private int activationChance;       // percentage of each ability so that the activation may or no occur
+    private String description;         // description of the ability
+    private AbilityType abilityType;    // constant used to discriminate abilities
+    private boolean isActive;           // flag used to specify if the ability is active or not
 
     public SpecialAbility(String name, int activationChance, String description, AbilityType abilityType, boolean isActive) {
         this.name = name;

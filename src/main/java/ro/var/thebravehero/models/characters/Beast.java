@@ -2,7 +2,6 @@ package ro.var.thebravehero.models.characters;
 
 /*
  *Child class of Character
- *There was no need for adding more attributes
  */
 
 public class Beast extends Character {

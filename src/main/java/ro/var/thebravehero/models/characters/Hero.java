@@ -6,7 +6,7 @@ import java.util.List;
 
 /*
  *Child class of Character
- *A hero has in addition from the attributes inherited from Character, a list of SpecialAbilities
+ *A hero has in addition from the attributes inherited from Character a list of SpecialAbilities
  */
 
 public class Hero extends Character {

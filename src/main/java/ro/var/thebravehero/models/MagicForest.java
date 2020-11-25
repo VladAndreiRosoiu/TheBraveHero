@@ -18,57 +18,59 @@ import java.util.Scanner;
 
 public class MagicForest {
 
-    private Scanner sc = new Scanner(System.in); // scanner used to take input from the player
-    private final List<Hero> heroes; // List of heroes needed for the app logic
-    private final List<Beast> beasts; // List of beasts needed for the app logic
-    private Hero currentHero; // after choosing a hero from the List<Hero> heroes, this variable points to that selected hero
-    private Beast currentBeast;// after randomizing a beast from the List<Beast> beasts, this variable points to that selected beast
-    private int round = 1; // counter used to track rounds
+    private Scanner sc = new Scanner(System.in);
+    private final List<Hero> heroes;        // List of heroes needed for the app logic
+    private final List<Beast> beasts;       // List of beasts needed for the app logic
+    private Hero currentHero;               // after choosing a hero from the List<Hero> heroes, this variable points to that selected hero
+    private Beast currentBeast;             // after randomizing a beast from the List<Beast> beasts, this variable points to that selected beast
+    private int round = 1;                  // counter used to track rounds
     private final Random random = new Random();
-    private boolean turn; // flag used to keep track of the current attacker. In this way, hero and beast switch places one after the other
-    private boolean gameOn; // flag used to keep track of the player's wish to continue the game or to end it
+    private boolean turn;                   // flag used to keep track of the current attacker. In this way, hero and beast switch places one after the other
+    private boolean gameOn;                 // flag used to keep track of the player's wish to continue the game or to end it
 
-    public MagicForest(List<Hero> heroes, List<Beast> beasts) { // MagicForest constructor
+    public MagicForest(List<Hero> heroes, List<Beast> beasts) {
         this.heroes = heroes;
         this.beasts = beasts;
     }
 
     public void startGame() {
-        /*
-         *Here is where the application logic is linked and the game takes part using a while loop
-         */
-        printGameIntroduction(); // simple method that handles the printing introduction printing
-        setHero(); // method used to allow the player hero selection
-        setBeast(); // randomly selecting a beast
-        printFightIntroduction(); // simple method that prints a continuation of the adventure
-        turn = isHeroFirst(); // setting the flag used to keep track of the attack process. If turn is true, the hero goes first, else, the beast goes first
-        printInitialStats(); // printing stats of the hero and the beast
+      /*
+      *Method created to link the app logic
+       */
+        printGameIntroduction();            // print method
+        setHero();                          // hero selection method
+        setBeast();                         // random beast selection method
+        printFightIntroduction();           // print method
+        turn = isHeroFirst();               // setting the flag used to keep track of the turns. True = hero first, false = beast first
+        printInitialStats();                // print method - stats of characters
         System.out.println("Are you ready start the fight?");
-        retreatFromBattle(); // method that allows the player to start the fight or to retreat from battle
-        printFirstAttacker(); // method used to print who goes first using the flag boolean flag "turn"
+        retreatFromBattle();                // method that allows the player to start the fight or not
+        printFirstAttacker();               // print method - who goes first
         while (gameOn && round < 21 && currentHero.getLife() > 0 && currentBeast.getLife() > 0) {
             System.out.println("Round " + round + " starts!");
-            setHeroAbilities(); // at the beginning of each round, hero abilities are activated given their chance
-            int damage = playRound(); //this method handles how the attack and the defend part of the game happens. After, it returns the damage resulted from that round
-            printRoundStatistics(damage); // simple method that prints what happened in each round
-            resetHeroAbilities(); // when the round finishes, hero abilities are deactivated
-            turn = !turn; // after a round has ended, "turn" takes it's opposite to allow the other character to attack
-            round++; // round is incremented at the end
-            if (round < 21 && currentHero.getLife() > 0 && currentBeast.getLife() > 0) { // if statement introduced so that the player is asked to continue only if ending game conditions are not met
+            setHeroAbilities();             // at the beginning of each round, hero abilities are activated by their given chance
+            int damage = playRound();       // method used to handle the attack/defend part of the game after
+            printRoundStatistics(damage);   // print method
+            resetHeroAbilities();           // when the round finishes, hero abilities are deactivated
+            turn = !turn;                   // after a round has ended, "turn" takes it's opposite to allow the other character to attack
+            round++;                        // round is incremented at the end
+            if (round < 21 && currentHero.getLife() > 0 && currentBeast.getLife() > 0) { // if statement introduced so that the
+                                                                                         // player is asked to continue only if ending
+                                                                                         // game conditions are not met
                 System.out.println("Continue?");
                 retreatFromBattle();
             } else {
                 break;
             }
         }
-        if (currentHero.getLife() <= 0) { // if statement introduced to handle the end game situations
-            printDefeat(); // simple print method used in case hero is defeated
+        if (currentHero.getLife() <= 0) {   // if statement introduced to handle the end game situations
+            printDefeat();                  // print method
         } else if (currentBeast.getLife() <= 0) {
-            printVictory(); // simple print method used in case hero is victorious
+            printVictory();                 // print method
         } else if (round > 20) {
-            printTie(); // simple print method used in case the 20 round marker is reached
+            printTie();                     // print method
         }
-        round = 1;
+        round = 1;                          // when the game ends, round counter is reset back to 1
     }
 
     private void setHero() {
@@ -143,9 +145,9 @@ public class MagicForest {
     private int initiateAttack(int strength, int defence) {
         /*
          *This method is used to calculate the damage amount
-         * The rule is : damage done is equal to strength of the attacked minus defenders defence. If the amount is between 0 and 100, the amount is returned
-         * If damage is bellow 0, will return 0
-         * If damage is higher than 100, will return 100
+         *The rule is : damage done is equal to strength of the attacked minus defenders defence. If the amount is between 0 and 100, the amount is returned
+         *If damage is bellow 0, will return 0
+         *If damage is higher than 100, will return 100
          */
         int damage = strength - defence;
         if (damage > 0 && damage <= 100) {
@@ -174,15 +176,15 @@ public class MagicForest {
         int damage;
         if (turn) {
             System.out.println(currentHero.getName() + " grabs his sword and attacks!");
-            int initialStrength = currentHero.getStrength(); // when hero is attacking, it has a chance that an offensive special abilities activates
-            // This variable is used to store the initial strength of the hero and re-apply it when the attack finishes
+            int initialStrength = currentHero.getStrength();    // when hero is attacking it is a chance that an offensive special abilities activates
+                                                                // this variable is used to store the initial strength of the hero and re-apply it when the attack finishes
             for (SpecialAbility specialAbility : currentHero.getSpecialAbilities()) {
                 if (specialAbility.getAbilityType().equals(AbilityType.DAMAGE_INCREASE)
                         && specialAbility.isActive()) {
                     currentHero.setStrength(currentHero.getStrength() * 2);
                 }
             }
-            if (defend(currentBeast.getLuck())) { // if statement used to validate the dodge logic
+            if (defend(currentBeast.getLuck())) {               // if statement used to validate the dodge logic
                 System.out.println(currentBeast.getName() + " dodges the attack!");
                 damage = 0;
             } else {
