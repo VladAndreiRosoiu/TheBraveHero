@@ -74,6 +74,7 @@ public class MagicForest {
     private void setHero() {
         /*
          *In case we add more heroes, this method allows the player to select one of them
+         *Also, it validates user input and loops until a valid answer is provided by the user
          */
         try {
             for (int i = 0; i < heroes.size(); i++) {
