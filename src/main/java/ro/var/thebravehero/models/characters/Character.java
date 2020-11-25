@@ -1,7 +1,9 @@
 package ro.var.thebravehero.models.characters;
 
 /*
- *TODO
+ *The parent class for Hero and Beats, as both the before mentioned classes have shared attributes
+ *This class is abstract so that it cannot be instantiated
+ *The attributes are self explanatory, getters and setters for all of them
  */
 
 

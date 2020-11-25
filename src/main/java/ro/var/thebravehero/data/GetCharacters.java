@@ -1,18 +1,24 @@
 package ro.var.thebravehero.data;
 
-import ro.var.thebravehero.models.abilities.*;
-import ro.var.thebravehero.models.characters.*;
-import java.util.*;
+import ro.var.thebravehero.models.abilities.AbilityType;
+import ro.var.thebravehero.models.abilities.SpecialAbility;
+import ro.var.thebravehero.models.characters.Beast;
+import ro.var.thebravehero.models.characters.Hero;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 /*
-*TODO
+ *Although hard coding data in the app is not a good approach, file reading or database was avoided (no additional frameworks are allowed)
+ *In the future, this class may be replaced with DAO and all the data can be stored in an database
  */
-
 public class GetCharacters {
 
     private static final Random random = new Random();
 
-    public static List<Hero> getHeroes() {
+    public static List<Hero> getHeroes() { // this method returns a list of heroes
         List<SpecialAbility> specialAbilities = new ArrayList<>();
         SpecialAbility specialAbility1 = new SpecialAbility(
                 "Dragon's Force",
@@ -37,7 +43,7 @@ public class GetCharacters {
         return Arrays.asList(hero);
     }
 
-    public static List<Beast> getBeasts() {
+    public static List<Beast> getBeasts() { // this method returns a list of beasts
         Beast beast = new Beast("Beast",
                 (55 + random.nextInt(80 - 55 + 1)),
                 (50 + random.nextInt(80 - 50 + 1)),
