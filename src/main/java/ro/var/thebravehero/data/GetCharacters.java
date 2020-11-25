@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Random;
 
 /*
- *Although hard coding data in the app is not a good approach, file reading or database was avoided (no additional frameworks are allowed)
+ *Although hard coding data is not a good approach, file reading or database was avoided (no additional frameworks are allowed)
  *In the future, this class may be replaced with DAO and all the data can be stored in an database
  */
 public class GetCharacters {
