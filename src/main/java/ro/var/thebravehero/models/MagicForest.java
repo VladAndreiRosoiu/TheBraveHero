@@ -26,7 +26,6 @@ public class MagicForest {
     private boolean turn;
     private boolean gameOn;
 
-
     public MagicForest(List<Hero> heroes, List<Beast> beasts) {
         this.heroes = heroes;
         this.beasts = beasts;
@@ -67,7 +66,7 @@ public class MagicForest {
         } else if (round > 20) {
             System.out.println("It's a tie! Nobody won!");
         }
-        playAgain();
+        round = 1;
     }
 
     private void setHero() {
@@ -229,7 +228,14 @@ public class MagicForest {
          *TODO
          */
         for (SpecialAbility specialAbility : currentHero.getSpecialAbilities()) {
-            if (specialAbility.isActive()) {
+            if (specialAbility.isActive() &&
+                    specialAbility.getAbilityType().equals(AbilityType.DAMAGE_INCREASE) &&
+                    turn) {
+                System.out.println(specialAbility.getName() + " was activated this round!");
+                System.out.println(specialAbility.getDescription());
+            } else if (specialAbility.isActive() &&
+                    specialAbility.getAbilityType().equals(AbilityType.DEFENCE_INCREASE) &&
+                    !turn) {
                 System.out.println(specialAbility.getName() + " was activated this round!");
                 System.out.println(specialAbility.getDescription());
             }
@@ -262,24 +268,6 @@ public class MagicForest {
                 break;
             default:
                 retreatFromBattle();
-        }
-    }
-
-    private void playAgain() {
-        System.out.println("Do you want to start another adventure? YES/NO");
-        String answer = sc.next().toUpperCase();
-        switch (answer) {
-            case "YES":
-                round = 1;
-                startGame();
-                break;
-            case "NO":
-                System.out.println("Thank you for playing!");
-                System.exit(0);
-                break;
-            default:
-                System.out.println("Oooops.. we could not match your answer. Let's try again!");
-                playAgain();
         }
     }
 }
