@@ -5,6 +5,7 @@ import ro.var.thebravehero.models.abilities.SpecialAbility;
 import ro.var.thebravehero.models.characters.Beast;
 import ro.var.thebravehero.models.characters.Hero;
 
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
@@ -23,6 +24,7 @@ public class MagicForest {
     private int round = 1;
     private final Random random = new Random();
     private boolean turn;
+    private boolean gameOn;
 
 
     public MagicForest(List<Hero> heroes, List<Beast> beasts) {
@@ -33,76 +35,77 @@ public class MagicForest {
     public void startGame() {
 
         /*
-        *TODO
+         *TODO
          */
 
-        currentHero = chooseHero();
-        currentBeast = chooseBeast();
+        setHero();
+        setBeast();
         turn = isHeroFirst();
         printInitialStatistics();
-
-
         System.out.println("Are you ready to start?");
-        String answer = sc.next();
-        boolean continueGame = answer.equals("yes");
-        while (continueGame && round < 21 && currentHero.getLife() > 0 && currentBeast.getLife() > 0) {
-            System.out.println("ROUND "+round + " STARTED!");
+        retreatFromBattle();
+        printFirstAttacker();
+        while (gameOn && round < 21 && currentHero.getLife() > 0 && currentBeast.getLife() > 0) {
+            System.out.println("ROUND " + round + " STARTED!");
             setHeroAbilities();
             int damage = playRound();
             printRoundStatistics(damage);
             resetHeroAbilities();
             turn = !turn;
             round++;
-            System.out.println("Continue?");
-            answer = sc.next();
-            continueGame = answer.equals("yes");
+            if (round < 21 && currentHero.getLife() > 0 && currentBeast.getLife() > 0) {
+                System.out.println("Continue or retreat?");
+                retreatFromBattle();
+            } else {
+                break;
+            }
         }
         if (currentHero.getLife() <= 0) {
             System.out.println("Hero died!");
         } else if (currentBeast.getLife() <= 0) {
             System.out.println("Beast died!");
         } else if (round > 20) {
-            System.out.println("It's a tie! Nobody died!");
+            System.out.println("It's a tie! Nobody won!");
         }
-        System.out.println("Do you want to start another adventure?");
-        answer=sc.next();
-        if (answer.equalsIgnoreCase("yes")){
-            round = 1 ;
-            startGame();
-        }else {
-            System.out.println("Thank you for playing!");
-        }
-
+        playAgain();
     }
 
-
-
-    private Hero chooseHero() {
+    private void setHero() {
         /*
          *In case we add more heroes, this method will allow the player to choose one of them!
          */
 
         //TODO
-        System.out.println("Choose hero");
-        for (int i = 0; i < heroes.size(); i++) {
-            System.out.println(i + 1 + " - " + heroes.get(i).getName());
-            System.out.print("HERO LIFE " + heroes.get(i).getLife());
-            System.out.print("\tHERO STRENGTH " + heroes.get(i).getStrength());
-            System.out.print("\tHERO DEFENCE " + heroes.get(i).getDefence());
-            System.out.print("\tHERO SPEED " + heroes.get(i).getSpeed());
-            System.out.print("\tHERO LUCK " + heroes.get(i).getLuck());
+
+        try {
+            for (int i = 0; i < heroes.size(); i++) {
+                System.out.println(i + 1 + " - " + heroes.get(i).getName());
+                System.out.print("HERO LIFE " + heroes.get(i).getLife());
+                System.out.print("\tHERO STRENGTH " + heroes.get(i).getStrength());
+                System.out.print("\tHERO DEFENCE " + heroes.get(i).getDefence());
+                System.out.print("\tHERO SPEED " + heroes.get(i).getSpeed());
+                System.out.print("\tHERO LUCK " + heroes.get(i).getLuck());
+            }
+            System.out.println();
+            System.out.println("CHOOSE YOUR HERO!");
+            int choice = sc.nextInt();
+            currentHero = heroes.get(choice - 1);
+        } catch (InputMismatchException e) {
+            System.out.println("WRONG ANSWER!");
+            sc = new Scanner(System.in);
+            setHero();
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Please choose a corresponding number!!");
+            sc = new Scanner(System.in);
+            setHero();
         }
-        System.out.println();
-        System.out.println("CHOOSE YOUR HERO!");
-        int choice = sc.nextInt();
-        return heroes.get(choice - 1);
     }
 
-    private Beast chooseBeast() {
+    private void setBeast() {
         /*
          *In case we add more beasts, this method will randomly return one of the beasts!
          */
-        return beasts.get(random.nextInt(beasts.size()));
+        currentBeast = beasts.get(random.nextInt(beasts.size()));
     }
 
     private boolean isHeroFirst() {
@@ -152,7 +155,7 @@ public class MagicForest {
         }
     }
 
-    private boolean defendAttack(int luck) {
+    private boolean defend(int luck) {
         /*
          *TODO
          */
@@ -173,7 +176,7 @@ public class MagicForest {
                     currentHero.setStrength(currentHero.getStrength() * 2);
                 }
             }
-            if (defendAttack(currentBeast.getLuck())) {
+            if (defend(currentBeast.getLuck())) {
                 System.out.println("BEAST DEFENDED ATTACK!");
                 damage = 0;
             } else {
@@ -183,7 +186,7 @@ public class MagicForest {
             currentHero.setStrength(initialStrength);
         } else {
             System.out.println("BEAST ATTACKING!");
-            if (defendAttack(currentHero.getLuck())) {
+            if (defend(currentHero.getLuck())) {
                 damage = 0;
                 System.out.println("HERO DEFENDED ATTACK!");
             } else {
@@ -237,4 +240,46 @@ public class MagicForest {
         System.out.println("ROUND " + round + " ENDED!");
     }
 
+    private void printFirstAttacker() {
+        if (turn && round == 1) {
+            System.out.println(currentHero.getName() + " WAS FASTER THAN THE BEAST AND STRIKES FIRST!");
+        } else if (!turn && round == 1) {
+            System.out.println(currentBeast.getName() + " WAS FASTER THAN OUR HERO AND STRIKES FIRST!");
+
+        }
+    }
+
+    private void retreatFromBattle() {
+        System.out.println("Choose YES/NO");
+        String answer = sc.next().toUpperCase();
+        switch (answer) {
+            case "YES":
+                gameOn = true;
+                break;
+            case "NO":
+                System.out.println("CHICKEN!!!!");
+                gameOn = false;
+                break;
+            default:
+                retreatFromBattle();
+        }
+    }
+
+    private void playAgain() {
+        System.out.println("Do you want to start another adventure? YES/NO");
+        String answer = sc.next().toUpperCase();
+        switch (answer) {
+            case "YES":
+                round = 1;
+                startGame();
+                break;
+            case "NO":
+                System.out.println("Thank you for playing!");
+                System.exit(0);
+                break;
+            default:
+                System.out.println("Oooops.. we could not match your answer. Let's try again!");
+                playAgain();
+        }
+    }
 }
