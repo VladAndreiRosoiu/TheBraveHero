@@ -4,7 +4,7 @@
 
 When the app is started, the player is greeted with a message and a a list of heroes is printed. In this way, if later on more heroes are added, player may choose one of them and the app logic doesn't need to be changed.
 For now is just one hero, and only one beast. In the same way, more beasts can be added to. The beast is randomized by the app so the player has no control over who is fighting with.
-Later on, the app prints hero's and beast's stats and asks the player if the fight may start.
+After, the app prints hero's and beast's stats and asks the player if the fight may start.
 The game has 20 rounds, each round being defined as an attack from one of the characters.
 
 
