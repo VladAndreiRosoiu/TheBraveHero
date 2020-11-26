@@ -142,7 +142,7 @@ public class MagicForest {
     private int initiateAttack(int strength, int defence) {
         /*
          *This method is used to calculate the damage amount
-         *The rule is : damage done is equal to strength of the attacked minus defenders defence. If the amount is between 0 and 100, the amount is returned
+         *The rule is : damage done is equal to strength of the attacker minus defenders defence. If the amount is between 0 and 100, the amount is returned
          *If damage is bellow 0, will return 0
          *If damage is higher than 100, will return 100
          */
